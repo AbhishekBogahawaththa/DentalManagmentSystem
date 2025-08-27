@@ -1,1 +1,1 @@
-The Medical Appointment Scheduling System is a web-based application developed as a second-year, first-semester group project. Built using Java Servlets, JSP, and Maven, it demonstrates softwere engineering concepts including database handling.
+The Denatal Management System is a web-based application developed as a second-year, first-semester group project. Built using Java Servlets, JSP, and Maven, it demonstrates softwere engineering concepts including database handling.
