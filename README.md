@@ -1,2 +1,1 @@
-# DentalManagmentSystem
-A Java-based web application for scheduling medical appointments using Servlets, JSP, and MySql — built as a university project to demonstrate Softwere engineering concepts and handling databases and crud operations.
+The Medical Appointment Scheduling System is a web-based application developed as a second-year, first-semester group project. Built using Java Servlets, JSP, and Maven, it demonstrates softwere engineering concepts including database handling.
