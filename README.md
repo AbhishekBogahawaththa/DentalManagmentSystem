@@ -1,4 +1,6 @@
-Project Structure
+# Dental Management System
+
+## 📂 Project Structure
 
 DentalManagementSystem/
 ├── src/
