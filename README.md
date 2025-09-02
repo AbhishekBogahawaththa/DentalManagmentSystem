@@ -2,6 +2,7 @@
 
 ## 📂 Project Structure
 
+```bash
 DentalManagementSystem/
 ├── src/
 │   ├── main/
