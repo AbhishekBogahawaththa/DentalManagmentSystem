@@ -1,4 +1,3 @@
-# Dental Management System
 # 🦷 Dental Management System
 
 ## 📌 Overview
