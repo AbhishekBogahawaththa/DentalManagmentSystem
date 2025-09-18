@@ -3,7 +3,7 @@ package com.dental.model;
 import java.time.LocalDate;
 
 public class Patient {
-    private int patientId;
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
@@ -15,11 +15,11 @@ public class Patient {
 
     public Patient() {}
 
-    public int getPatientId() {
-        return patientId;
+    public int getid() {
+        return id;
     }
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public void setPatientId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -76,6 +76,14 @@ public class Patient {
     }
     public void setAllergies(String allergies) {
         this.allergies = allergies;
+    }
+
+
+    public void setNic(String nic) {
+        
+    }
+
+    public void setGender(String gender) {
     }
 }
 
