@@ -4,22 +4,48 @@ import java.time.LocalDate;
 
 public class Patient {
     private int id;
+    private String nic;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private String address;
-    private LocalDate dateOfBirth;
+    private LocalDate dob;
+    private String gender;
     private String medicalHistory;
-    private String allergies;
 
+    // Empty constructor
     public Patient() {}
 
-    public int getid() {
+    // Full constructor
+    public Patient(int id, String nic, String firstName, String lastName,
+                   LocalDate dob, String gender, String phone, String email,
+                   String address, String medicalHistory) {
+        this.id = id;
+        this.nic = nic;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.medicalHistory = medicalHistory;
+    }
+
+    // ✅ Getters & Setters
+    public int getId() {
         return id;
     }
-    public void setPatientId(int id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNic() {
+        return nic;
+    }
+    public void setNic(String nic) {
+        this.nic = nic;
     }
 
     public String getFirstName() {
@@ -58,10 +84,17 @@ public class Patient {
     }
 
     public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+        return dob;
     }
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDateOfBirth(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getMedicalHistory() {
@@ -71,21 +104,11 @@ public class Patient {
         this.medicalHistory = medicalHistory;
     }
 
-    public String getAllergies() {
-        return allergies;
-    }
-    public void setAllergies(String allergies) {
-        this.allergies = allergies;
+    public void setPatientId(int i) {
     }
 
+    public int getPatientId() {
 
-    public void setNic(String nic) {
-        
-    }
-
-    public void setGender(String gender) {
+        return 0;
     }
 }
-
-    // Getters and setters...
-

@@ -4,106 +4,153 @@ import com.dental.model.Patient;
 import com.dental.util.DBUtil;
 
 import java.sql.*;
-import java.util.ArrayList;
+
+
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class PatientDAO {
 
     // Insert new patient
+    public void addPatient(Patient patient) {
+        String sql = "INSERT INTO Patients (nic, first_name, last_name, dob, gender, phone, email, address, medical_history) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, patient.getNic());
+            stmt.setString(2, patient.getFirstName());
+            stmt.setString(3, patient.getLastName());
+            stmt.setDate(4, patient.getDateOfBirth() != null ? java.sql.Date.valueOf(patient.getDateOfBirth()) : null);
+
+
+            if (patient.getDateOfBirth() != null) {
+                stmt.setDate(4, Date.valueOf(patient.getDateOfBirth()));
+            } else {
+                stmt.setNull(4, Types.DATE);
+            }
+
+            stmt.setString(5, patient.getGender());
+            stmt.setString(6, patient.getPhone());
+            stmt.setString(7, patient.getEmail());
+            stmt.setString(8, patient.getAddress());
+            stmt.setString(9, patient.getMedicalHistory());
+
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Get all patients
-    public List<Patient> getAllPatients() throws Exception {
+    public List<Patient> getAllPatients() {
         List<Patient> list = new ArrayList<>();
         String sql = "SELECT * FROM Patients ORDER BY id DESC";
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
             while (rs.next()) {
                 Patient p = new Patient();
-                p.setPatientId((rs.getInt("id")));
+                p.setId(rs.getInt("id"));
                 p.setNic(rs.getString("nic"));
                 p.setFirstName(rs.getString("first_name"));
                 p.setLastName(rs.getString("last_name"));
+
                 Date dob = rs.getDate("dob");
                 if (dob != null) {
                     p.setDateOfBirth(dob.toLocalDate());
                 }
+
                 p.setGender(rs.getString("gender"));
                 p.setPhone(rs.getString("phone"));
                 p.setEmail(rs.getString("email"));
                 p.setAddress(rs.getString("address"));
                 p.setMedicalHistory(rs.getString("medical_history"));
-                // created_at and updated_at if you want
+
                 list.add(p);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }
 
-
-
-
-    // Delete patient
-    public void deletePatient(int id) throws Exception {
-        String sql = "DELETE FROM Patients WHERE id=?";  // changed
+    // ✅ Find patient by ID
+    public Patient getPatientById(int id) {
+        String sql = "SELECT * FROM Patients WHERE id = ?";
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        }
-    }
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    // Update patient
-    public void updatePatient(Patient p) throws Exception {
-        String sql = "UPDATE Patients SET FirstName=?, LastName=?, Email=?, Phone=?, Address=?, DateOfBirth=?, MedicalHistory=?, Allergies=?, UpdatedAt=SYSUTCDATETIME() WHERE id=?"; // changed
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, p.getFirstName());
-            ps.setString(2, p.getLastName());
-            ps.setString(3, p.getEmail());
-            ps.setString(4, p.getPhone());
-            ps.setString(5, p.getAddress());
-            if (p.getDateOfBirth() != null) {
-                ps.setDate(6, Date.valueOf(p.getDateOfBirth()));
-            } else {
-                ps.setNull(6, Types.DATE);
-            }
-            ps.setString(7, p.getMedicalHistory());
-            ps.setString(8, p.getAllergies());
-            ps.setInt(9, p.getid());  // changed getid() -> getId()
-            ps.executeUpdate();
-        }
-    }
-
-    // Get patient by ID
-    public Patient getPatientById(int id) throws Exception {
-        String sql = "SELECT * FROM Patients WHERE id=?";  // changed
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Patient p = new Patient();
-                    p.setPatientId(rs.getInt("id"));   // changed
-                    p.setFirstName(rs.getString("FirstName"));
-                    p.setLastName(rs.getString("LastName"));
-                    p.setEmail(rs.getString("Email"));
-                    p.setPhone(rs.getString("Phone"));
-                    p.setAddress(rs.getString("Address"));
-                    Date dob = rs.getDate("DateOfBirth");
+                    p.setId(rs.getInt("id"));
+                    p.setNic(rs.getString("nic"));
+                    p.setFirstName(rs.getString("first_name"));
+                    p.setLastName(rs.getString("last_name"));
+
+                    Date dob = rs.getDate("dob");
                     if (dob != null) {
                         p.setDateOfBirth(dob.toLocalDate());
                     }
-                    p.setMedicalHistory(rs.getString("MedicalHistory"));
-                    p.setAllergies(rs.getString("Allergies"));
+
+                    p.setGender(rs.getString("gender"));
+                    p.setPhone(rs.getString("phone"));
+                    p.setEmail(rs.getString("email"));
+                    p.setAddress(rs.getString("address"));
+                    p.setMedicalHistory(rs.getString("medical_history"));
                     return p;
-                } else {
-                    return null;
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // ✅ Update existing patient
+    public void updatePatient(Patient patient) {
+        String sql = "UPDATE Patients SET nic=?, first_name=?, last_name=?, dob=?, gender=?, phone=?, email=?, address=?, medical_history=?, updated_at=SYSUTCDATETIME() " +
+                "WHERE id=?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, patient.getNic());
+            stmt.setString(2, patient.getFirstName());
+            stmt.setString(3, patient.getLastName());
+
+            if (patient.getDateOfBirth() != null) {
+                stmt.setDate(4, Date.valueOf(patient.getDateOfBirth()));
+            } else {
+                stmt.setNull(4, Types.DATE);
+            }
+
+            stmt.setString(5, patient.getGender());
+            stmt.setString(6, patient.getPhone());
+            stmt.setString(7, patient.getEmail());
+            stmt.setString(8, patient.getAddress());
+            stmt.setString(9, patient.getMedicalHistory());
+            stmt.setInt(10, patient.getId());
+
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public void addPatient(Patient p) {
+    // ✅ Delete patient
+    public void deletePatient(int id) {
+        String sql = "DELETE FROM Patients WHERE id=?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
