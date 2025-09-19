@@ -23,14 +23,14 @@ public class LoginServlet extends HttpServlet {
         boolean isValid = false;
 
         // DEMO: Replace with real DB check later
-        if ("admin".equals(role) && "admin123".equals(username) && "pass123".equals(password)) {
+        if ("admin".equals(role) && "Admin".equals(username) && "admin123".equals(password)) {
             isValid = true;
         } else if ("dentist".equals(role) && "dentist1".equals(username) && "dentpass".equals(password)) {
             isValid = true;
         } else if ("patient".equals(role) && "patient1".equals(username) && "patpass".equals(password)) {
             isValid = true;
         }
-
+        String contextPath = request.getContextPath();
         if (isValid) {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
