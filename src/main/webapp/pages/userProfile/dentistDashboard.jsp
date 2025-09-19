@@ -1,11 +1,21 @@
 <!-- webapp/pages/userProfile/dentistDashboard.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-    String role = (String) session.getAttribute("role");
-    if (role == null || !"dentist".equals(role)) {
-        response.sendRedirect("login.jsp");
+
+    // Check if user is logged in
+    if (session.getAttribute("username") == null) {
+        response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Please login first");
         return;
     }
+
+    // Enforce role: only dentists allowed
+    String role = (String) session.getAttribute("role");
+    if (!"dentist".equals(role)) {
+        response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Access denied. Dentists only.");
+        return;
+    }
+
+    String username = (String) session.getAttribute("username");
 %>
 <!DOCTYPE html>
 <html>
