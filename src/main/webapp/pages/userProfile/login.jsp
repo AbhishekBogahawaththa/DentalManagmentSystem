@@ -1,129 +1,327 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Abhishek
-  Date: 02-09-2025
-  Time: 09:06
-  To change this template use File | Settings | File Templates.
---%>
-<!-- webapp/pages/userProfile/login.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Dental Clinic - Login</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS for responsive and professional layout -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
+    <title>Dental Clinic - Login</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
+        :root {
+            --dark-blue: #00008B;
+            --light-blue: #60a5fa;
+            --bg-gray: #f9fafb;
+            --text-color: #1f2937;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
         body {
-            background: url('https://images.pexels.com/photos/7803060/pexels-photo-7803060.jpeg?auto=compress&cs=tinysrgb&w=1920') no-repeat center center fixed; /* Dental tools background image */
-            background-size: cover; /* Cover the entire background */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
+            padding: 0;
+            background-color: var(--bg-gray);
         }
-        .login-container {
-            background: rgba(0, 123, 255, 0.1); /* Semi-transparent blue tint for blurred effect */
-            backdrop-filter: blur(10px); /* Blur the background behind the container */
-            border: 1px solid rgba(0, 123, 255, 0.2); /* Subtle blue border for glassmorphism */
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            max-width: 400px;
+
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            color: var(--dark-blue);
+            font-size: 1.8rem;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--dark-blue);
+        }
+
+        .hero {
+            background: url('https://images.pexels.com/photos/7803060/pexels-photo-7803060.jpeg?auto=compress&cs=tinysrgb&w=1920') no-repeat center center;
+            background-size: cover;
+            height: 80vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            animation: fadeIn 1s ease-in-out; /* Smooth fade-in animation */
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
         }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            font-weight: 700;
+            color: ghostwhite;
+            text-shadow: none;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .btn-contact {
+            background-color: white;
+            color: var(--dark-blue); /* ✅ Contact button text in #00008B */
+            border: 2px solid var(--dark-blue);
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-contact:hover {
+            background-color: var(--dark-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .contact-info {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .contact-info strong {
+            color: white;
+        }
+
+        .login-card {
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            width: 360px;
+            z-index: 3;
+            border: 1px solid #e5e7eb;
+        }
+
         .login-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
+
         .login-header i {
-            font-size: 50px;
-            color: #007bff; /* Blue icon for dental theme */
-            margin-bottom: 10px;
+            color: var(--dark-blue); /* ✅ Login icon in #00008B */
+            font-size: 1.8rem;
+            margin-right: 10px;
         }
-        .login-header h2 {
-            color: #333;
-            font-weight: bold;
+
+        .login-header h4 {
+            color: var(--dark-blue); /* ✅ Login title in #00008B */
+            font-weight: 600;
+            margin: 0;
         }
+
         .form-label {
             font-weight: 600;
-            color: #555;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
         }
+
         .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
             border-radius: 8px;
-            border: 1px solid #ced4da;
+            font-size: 1rem;
             transition: border-color 0.3s;
         }
+
         .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+            border-color: var(--dark-blue);
+            box-shadow: 0 0 0 3px rgba(0, 0, 139, 0.2);
+            outline: none;
         }
-        .btn-primary {
-            background-color: #007bff;
+
+        .btn-login {
+            background: var(--dark-blue); /* ✅ Button background #00008B */
+            color: white;
             border: none;
+            padding: 12px 24px;
             border-radius: 8px;
-            padding: 10px;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 139, 0.3);
+            font-size: 1.1rem;
         }
-        .btn-primary:hover {
-            background-color: #0056b3;
+
+        .btn-login:hover {
+            background: #00006b; /* Slightly darker on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 139, 0.4);
         }
+
         .register-link {
-            text-align: center;
             margin-top: 20px;
-            color: #666;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.95rem;
         }
+
         .register-link a {
-            color: #007bff;
+            color: var(--dark-blue); /* ✅ Register link in #00008B */
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
         }
+
         .register-link a:hover {
             text-decoration: underline;
         }
-        /* Removed the overlay and watermark as we now use glassmorphism with blue tint */
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                height: auto;
+                padding: 20px;
+            }
+            .hero-content {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .login-card {
+                position: static;
+                transform: none;
+                margin-top: 20px;
+                width: 100%;
+                max-width: 360px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="login-container">
-    <div class="login-header">
-        <i class="fas fa-tooth"></i> <!-- Dental icon from Font Awesome -->
-        <h2>Dental Clinic Management System</h2>
-    </div>
-    <form action="LoginServlet" method="post">
-        <div class="mb-3">
-            <label class="form-label">Username:</label>
-            <input type="text" name="username" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Password:</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Role:</label>
-            <select name="role" class="form-select form-control" required>
-                <option value="admin">Admin</option>
-                <option value="dentist">Dentist</option>
-                <option value="patient">Patient</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
-    </form>
-    <p class="register-link">New patient? <a href="${pageContext.request.contextPath}/pages/userProfile/register.jsp">Register Here</a></p>
-</div>
 
-<!-- Bootstrap JS for any interactive elements -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-tooth"></i> Dental Clinic Management System
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Dental Care Centre</h1>
+        <p>Looking for the best dental clinic in your area ? Our expert dental care focused on comfort, precision, and long-term oral health for a bright, healthy smile.</p>
+        <a href="#" class="btn btn-contact">
+            <i class="fas fa-phone me-2"></i> Contact us
+        </a>
+        <div class="contact-info">
+            <strong>+94 717292777</strong>
+            <span>Consultation</span>
+        </div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+        <div class="login-header">
+            <i class="fas fa-user-circle"></i> <!-- ✅ Icon color #00008B via CSS -->
+            <h4>Login</h4> <!-- ✅ Title color #00008B via CSS -->
+        </div>
+
+        <form action="${pageContext.request.contextPath}/LoginServlet" method="post">
+            <div class="mb-3">
+                <label class="form-label">Username:</label>
+                <input type="text" name="username" class="form-control" required placeholder="Enter username">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password:</label>
+                <input type="password" name="password" class="form-control" required placeholder="••••••••">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Role:</label>
+                <select name="role" class="form-control" required>
+                    <option value="admin">Admin</option>
+                    <option value="dentist">Dentist</option>
+                    <option value="patient">Patient</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-login">
+                <i class="fas fa-sign-in-alt me-2"></i> Login
+            </button>
+        </form>
+
+        <p class="register-link">
+            <i class="fas fa-user-plus me-1" style="color: #00008B;"></i>
+            <span style="color: #00008B;">New patient?</span>
+            <a href="${pageContext.request.contextPath}/pages/userProfile/register.jsp" style="color: #00008B;">Register Here</a> <!-- ✅ Link color #00008B via CSS -->
+        </p>
+    </div>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
