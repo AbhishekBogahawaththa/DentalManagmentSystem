@@ -108,70 +108,77 @@
             margin: 0 auto;
         }
 
-        .add-patient-form {
+        /* Big Cute Add Patient Icon Card */
+        .add-patient-card {
             flex: 1;
             background: white;
-            padding: 40px;
-            border-radius: 16px;
+            padding: 50px 30px;
+            border-radius: 20px;
             box-shadow: var(--card-shadow);
             border: 1px solid #e5e7eb;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        .add-patient-form h2 {
+        .add-patient-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .add-patient-icon {
+            font-size: 5rem;
             color: var(--dark-blue);
-            margin-bottom: 20px;
-            font-weight: 700;
+            margin-bottom: 25px;
+            background: rgba(0, 0, 139, 0.05);
+            width: 120px;
+            height: 120px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 139, 0.1);
         }
 
-        .add-patient-form h2 i {
+        .add-patient-card h3 {
             color: var(--dark-blue);
-            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
         }
 
-        .form-label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
+        .add-patient-card p {
+            color: #555;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            margin-bottom: 25px;
+            line-height: 1.5;
         }
 
-        .form-control:focus {
-            border-color: var(--dark-blue);
-            box-shadow: 0 0 0 3px rgba(0, 0, 139, 0.2);
-            outline: none;
-        }
-
-        .btn-add {
+        .btn-add-patient {
             background: var(--dark-blue);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 14px 32px;
+            border-radius: 50px;
             font-weight: 600;
-            width: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 139, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 139, 0.3);
             font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .btn-add:hover {
+        .btn-add-patient:hover {
             background: #00006b;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 139, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 139, 0.4);
         }
 
+        /* Patient List Section */
         .patient-list {
             flex: 2;
             background: white;
@@ -199,6 +206,7 @@
             color: white;
             border: none;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .table tbody tr:hover {
@@ -208,6 +216,7 @@
         .table td, .table th {
             vertical-align: middle;
             padding: 15px;
+            white-space: nowrap;
         }
 
         .badge-status {
@@ -257,7 +266,7 @@
             .main-container {
                 flex-direction: column;
             }
-            .add-patient-form,
+            .add-patient-card,
             .patient-list {
                 width: 100%;
                 max-width: none;
@@ -265,9 +274,15 @@
         }
 
         @media (max-width: 768px) {
-            .add-patient-form,
+            .add-patient-card {
+                padding: 40px 20px;
+            }
             .patient-list {
                 padding: 25px;
+            }
+            .table td, .table th {
+                padding: 10px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -294,33 +309,19 @@
 <!-- Main Container -->
 <div class="container-fluid">
     <div class="main-container">
-        <!-- Add Patient Form (Left Side) -->
-        <div class="add-patient-form">
-            <h2><i class="fas fa-user-plus"></i> Add New Patient</h2>
-            <form action="${pageContext.request.contextPath}/patients?action=new" method="post">
-                <div class="mb-3">
-                    <label class="form-label">Full Name:</label>
-                    <input type="text" name="fullName" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Email:</label>
-                    <input type="email" name="email" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Phone:</label>
-                    <input type="tel" name="phone" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Address:</label>
-                    <input type="text" name="address" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-add">
-                    <i class="fas fa-save me-2"></i> Save Patient
-                </button>
-            </form>
+        <!-- Big Cute Add Patient Icon Card -->
+        <div class="add-patient-card">
+            <div class="add-patient-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h3>Add New Patient</h3>
+            <p>Click below to register a new patient with full details including medical history and contact info.</p>
+            <a href="${pageContext.request.contextPath}/patients?action=new" class="btn-add-patient">
+                <i class="fas fa-plus-circle me-2"></i> Add Patient
+            </a>
         </div>
 
-        <!-- Patient List (Right Side) -->
+        <!-- Patient List -->
         <div class="patient-list">
             <h3><i class="fas fa-list"></i> All Patients</h3>
 
@@ -328,20 +329,28 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>NIC</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Status</th>
+                    <th>Address</th>
+                    <th>DOB</th>
+                    <th>Medical History</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>#1001</td>
-                    <td>Emily Johnson</td>
+                    <td>E123</td>
+                    <td>Emily</td>
+                    <td>Johnson</td>
                     <td>emily@example.com</td>
                     <td>+94 71 234 5678</td>
-                    <td><span class="badge-status badge-active">Active</span></td>
+                    <td>Colombo, Sri Lanka</td>
+                    <td>1990-05-15</td>
+                    <td>Toothache</td>
                     <td>
                         <a href="#" class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></a>
                         <a href="#" class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></a>
@@ -349,10 +358,14 @@
                 </tr>
                 <tr>
                     <td>#1002</td>
-                    <td>Michael Silva</td>
+                    <td>M345</td>
+                    <td>Michael</td>
+                    <td>Silva</td>
                     <td>michael@example.com</td>
                     <td>+94 77 987 6543</td>
-                    <td><span class="badge-status badge-active">Active</span></td>
+                    <td>Galle, Sri Lanka</td>
+                    <td>1985-11-22</td>
+                    <td>Nervefilling</td>
                     <td>
                         <a href="#" class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></a>
                         <a href="#" class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></a>
@@ -360,10 +373,14 @@
                 </tr>
                 <tr>
                     <td>#1003</td>
-                    <td>Sarah Fernando</td>
+                    <td>S567</td>
+                    <td>Sarah</td>
+                    <td>Fernando</td>
                     <td>sarah@example.com</td>
                     <td>+94 76 123 4567</td>
-                    <td><span class="badge-status badge-inactive">Inactive</span></td>
+                    <td>Kandy, Sri Lanka</td>
+                    <td>1995-03-08</td>
+                    <td> tooth surgery</td>
                     <td>
                         <a href="#" class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></a>
                         <a href="#" class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></a>
