@@ -14,263 +14,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Management — Dental Clinic</title>
+    <title>Patient Records — Dental Clinic</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --dental-primary: #1a73e8;
-            --dental-primary-light: #e8f0fe;
-            --dental-secondary: #00bfa5;
-            --dental-danger: #f44336;
-            --dental-bg: #f8fafc;
+            --dark-blue: #00008B;
+            --light-blue: #60a5fa;
+            --bg-gray: #f9fafb;
+            --text-color: #1f2937;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
-            background-color: var(--dental-bg);
-            color: #333;
-            padding-bottom: 80px;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://images.pexels.com/photos/7803060/pexels-photo-7803060.jpeg?auto=compress&cs=tinysrgb&w=1920') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .container-fluid {
+            position: relative;
+            z-index: 2;
+            padding: 0;
         }
 
         .navbar {
-            background: linear-gradient(135deg, var(--dental-primary), #0d47a1);
-            color: white;
-            padding: 1rem 0;
+            background-color: rgba(255, 255, 255, 0.95);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
         }
 
         .navbar-brand {
             font-weight: 700;
             font-size: 1.5rem;
+            color: var(--dark-blue) !important;
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
         .navbar-brand i {
-            margin-right: 10px;
-            color: #ffd700;
+            color: var(--dark-blue);
+            font-size: 1.8rem;
         }
 
-        .container-dashboard {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .page-header {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            border-left: 5px solid var(--dental-primary);
-        }
-
-        .page-header h1 {
-            font-weight: 700;
-            color: var(--dental-primary);
-            margin-bottom: 5px;
-        }
-
-        .page-header p.lead {
-            color: #666;
+        .navbar-text {
+            color: #333;
             font-weight: 500;
         }
 
-        .btn-dental-primary {
-            background: linear-gradient(135deg, var(--dental-primary), #0d47a1);
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
+        .btn-logout {
+            background-color: white;
+            color: var(--dark-blue);
+            border: 2px solid var(--dark-blue);
+            padding: 6px 16px;
             font-weight: 600;
-            box-shadow: 0 3px 8px rgba(26, 115, 232, 0.3);
+            border-radius: 30px;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
 
-        .btn-dental-primary:hover {
+        .btn-logout:hover {
+            background-color: var(--dark-blue);
+            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.4);
+            box-shadow: 0 4px 10px rgba(0,0,139,0.2);
         }
 
-        .btn-dental-secondary {
+        .main-container {
+            display: flex;
+            gap: 30px;
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        /* Patient List Section */
+        .patient-list {
+            flex: 1;
             background: white;
-            border: 2px solid var(--dental-primary);
-            color: var(--dental-primary);
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #e5e7eb;
         }
 
-        .btn-dental-secondary:hover {
-            background: var(--dental-primary);
-            color: white;
+        .patient-list h3 {
+            color: var(--dark-blue);
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .patient-list h3 i {
+            font-size: 1.3rem;
         }
 
         .table thead th {
-            background: var(--dental-primary-light);
-            color: var(--dental-primary);
-            font-weight: 600;
-            border-top: none;
-            vertical-align: middle;
-        }
-
-        .table td {
-            vertical-align: middle;
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #f1f5f9;
-            transform: scale(1.005);
-            transition: all 0.2s ease;
-        }
-
-        .action-btn {
-            padding: 6px 12px;
-            font-size: 0.875rem;
-            border-radius: 8px;
-            margin-right: 5px;
-        }
-
-        .action-btn i {
-            margin-right: 4px;
-        }
-
-        .alert {
-            border-radius: 12px;
-            padding: 16px 20px;
-            font-weight: 500;
+            background-color: var(--dark-blue);
+            color: white;
             border: none;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            font-weight: 600;
+            white-space: nowrap;
         }
 
-        .alert-success {
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-            color: #2e7d32;
+        .table tbody tr:hover {
+            background-color: #f0f5ff;
         }
 
-        .alert-danger {
-            background: linear-gradient(135deg, #ffebee, #ffcdd2);
-            color: #c62828;
+        .table td, .table th {
+            vertical-align: middle;
+            padding: 15px;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .patient-list {
+                width: 100%;
+            }
         }
 
         @media (max-width: 768px) {
-            .container-dashboard {
-                margin: 20px;
-                padding: 0;
-            }
-            .page-header {
-                padding: 20px;
-            }
-            .btn {
-                width: 100%;
-                margin-bottom: 10px;
+            .patient-list {
+                padding: 25px;
             }
             .table td, .table th {
-                font-size: 0.875rem;
-                padding: 8px;
+                padding: 10px;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
 
-<!-- Top Navbar -->
-<nav class="navbar">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <i class="fas fa-tooth"></i> DentalCare Admin
+            <i class="fas fa-tooth"></i> Dental Clinic Management
         </a>
-        <span class="text-white">
+        <div class="d-flex align-items-center">
+            <span class="navbar-text me-3">
                 Logged in as: <strong><%= session.getAttribute("username") %></strong>
             </span>
+            <a href="${pageContext.request.contextPath}/LogoutServlet" class="btn btn-logout">
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </a>
+        </div>
     </div>
 </nav>
 
 <!-- Main Container -->
-<div class="container-dashboard">
+<div class="container-fluid">
+    <div class="main-container">
 
-    <!-- Header Section -->
-    <div class="page-header">
-        <h1><i class="fas fa-users"></i> Patient Management</h1>
-        <p class="lead">Managing smiles, one patient at a time</p>
-    </div>
+        <!-- Patient List -->
+        <div class="patient-list">
+            <h3><i class="fas fa-list"></i> All Patients</h3>
 
-    <!-- Messages -->
-    <c:if test="${not empty message}">
-        <div class="alert alert-${messageType} alert-dismissible fade show d-flex align-items-center" role="alert">
-            <i class="fas ${messageType == 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'} me-3"></i>
-            <span>${message}</span>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-        </div>
-    </c:if>
-
-    <!-- Add Button -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="${pageContext.request.contextPath}/patients?action=new" class="btn btn-dental-primary">
-            <i class="fas fa-plus me-2"></i> Add New Patient
-        </a>
-        <a href="${pageContext.request.contextPath}/pages/userProfile/adminDashboard.jsp" class="btn btn-dental-secondary">
-            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
-        </a>
-    </div>
-
-    <!-- Patient Table -->
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead>
+            <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                    <th>NIC</th>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                    <th>Medical History</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="p" items="${patients}">
                     <tr>
-                        <th class="text-center" style="width: 5%">ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th class="text-center" style="width: 10%">DOB</th>
-                        <th>Medical History</th>
-                        <th class="text-center" style="width: 15%">Actions</th>
+                        <td>${p.nic != null ? p.nic : '—'}</td>
+                        <td>${p.id}</td>
+                        <td>${p.firstName}</td>
+                        <td>${p.lastName}</td>
+                        <td><a href="mailto:${p.email}" class="text-decoration-none">${p.email}</a></td>
+                        <td>${p.phone}</td>
+                        <td class="text-muted">${p.address != null && !p.address.isEmpty() ? p.address : '—'}</td>
+                        <td class="text-center">${p.dob != null ? p.dob : '—'}</td>
+                        <td>${p.gender != null ? p.gender : '—'}</td>
+                        <td class="text-muted">${p.medicalHistory != null && !p.medicalHistory.isEmpty() ? p.medicalHistory : '—'}</td>
+                        <td class="text-center">
+                            <a href="${pageContext.request.contextPath}/patients?action=edit&id=${p.id}"
+                               class="btn btn-sm btn-outline-primary me-2 px-3 py-1"
+                               style="border-radius: 8px; font-weight: 500;">
+                                <i class="fas fa-edit me-1"></i> Edit
+                            </a>
+                            <a href="${pageContext.request.contextPath}/patients?action=delete&id=${p.id}"
+                               class="btn btn-sm btn-outline-danger px-3 py-1"
+                               style="border-radius: 8px; font-weight: 500;"
+                               onclick="return confirm('Are you sure you want to delete patient #${p.id} - ${p.firstName} ${p.lastName}?')">
+                                <i class="fas fa-trash-alt me-1"></i> Delete
+                            </a>
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="p" items="${patients}">
-                        <tr>
-                            <td class="text-center fw-bold">${p.patientId}</td>
-                            <td>${p.firstName}</td>
-                            <td>${p.lastName}</td>
-                            <td><a href="mailto:${p.email}" class="text-decoration-none">${p.email}</a></td>
-                            <td>${p.phone}</td>
-                            <td class="text-muted">${p.address}</td>
-                            <td class="text-center">${p.dateOfBirth}</td>
-                            <td class="text-muted">${p.medicalHistory}</td>
-                            <td class="text-center">
-                                <a href="${pageContext.request.contextPath}/patients?action=edit&id=${p.patientId}"
-                                   class="btn btn-sm action-btn btn-outline-primary">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <a href="${pageContext.request.contextPath}/patients?action=delete&id=${p.patientId}"
-                                   class="btn btn-sm action-btn btn-outline-danger"
-                                   onclick="return confirm('Are you sure you want to delete patient #${p.patientId} - ${p.firstName} ${p.lastName}?')">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
-    </div>
 
+    </div>
 </div>
 
 <!-- Bootstrap JS -->
