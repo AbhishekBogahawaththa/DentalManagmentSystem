@@ -68,6 +68,7 @@
       background-color: rgba(255, 255, 255, 0.95);
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       padding: 1rem 0;
+      z-index: 3;
     }
 
     .navbar-brand {
@@ -240,8 +241,8 @@
       </div>
       <h3>View My Medical History</h3>
       <p>Review your past treatments, prescriptions, and dental records in one secure place.</p>
-      <a href="#" class="btn-action">
-        <i class="fas fa-file-medical me-2"></i> View Records
+      <a href="${pageContext.request.contextPath}/PatientMedicalHistoryServlet" class="btn-action">
+        <i class="fas fa-file-medical me-2"></i> View My Records
       </a>
     </div>
 
