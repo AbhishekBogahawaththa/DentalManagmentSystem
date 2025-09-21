@@ -1,6 +1,9 @@
-<!-- webapp/pages/userProfile/logout.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+  // Invalidate the session
   session.invalidate();
-  response.sendRedirect("login.jsp?message=Logged out successfully.");
+
+  // Redirect to login page with success message
+  String contextPath = request.getContextPath();
+  response.sendRedirect(contextPath + "/pages/userProfile/login.jsp?message=Logged out successfully.");
 %>
