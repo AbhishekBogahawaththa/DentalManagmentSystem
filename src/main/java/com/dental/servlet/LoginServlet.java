@@ -1,55 +1,86 @@
-// src/main/java/com/dental/servlet/LoginServlet.java
 package com.dental.servlet;
 
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+import com.dental.dao.UserDAO;
+import com.dental.dao.PatientDAO;
+import com.dental.model.User;
+import com.dental.model.Patient;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        System.out.println("========================================");
+        System.out.println("LOGIN ATTEMPT STARTED");
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
 
-        boolean isValid = false;
+        System.out.println("→ Received username: '" + username + "'");
+        System.out.println("→ Received password: '" + password + "'");
+        System.out.println("→ Received role: '" + role + "'");
 
-        // DEMO: Replace with real DB check later
-        if ("admin".equals(role) && "Admin".equals(username) && "admin123".equals(password)) {
-            isValid = true;
-        } else if ("dentist".equals(role) && "dentist1".equals(username) && "dentpass".equals(password)) {
-            isValid = true;
-        } else if ("patient".equals(role) && "patient1".equals(username) && "patpass".equals(password)) {
-            isValid = true;
+        if (username == null || password == null || role == null || role.trim().isEmpty()) {
+            System.out.println("→ ❌ Missing parameter");
+            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=All fields are required");
+            return;
         }
-        String contextPath = request.getContextPath();
-        if (isValid) {
-            HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            session.setAttribute("role", role);
 
-            // Redirect to correct dashboard
-            switch (role) {
-                case "admin":
-                    response.sendRedirect("pages/userProfile/adminDashboard.jsp");
-                    break;
-                case "dentist":
-                    response.sendRedirect("pages/userProfile/dentistDashboard.jsp");
-                    break;
-                case "patient":
-                    response.sendRedirect("pages/userProfile/patientDashboard.jsp");
-                    break;
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUserByUsernameAndPassword(username, password);
+
+        if (user == null) {
+            System.out.println("→ ❌ DAO returned NULL for username: " + username);
+            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Invalid username or password");
+            return;
+        }
+
+        System.out.println("→ ✅ User found: " + user.getUsername() + " | DB Role: " + user.getRole());
+
+        if (!role.equals(user.getRole())) {
+            System.out.println("→ ❌ Role mismatch: Form Role='" + role + "' | DB Role='" + user.getRole() + "'");
+            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Invalid role for this user");
+            return;
+        }
+
+        // Login successful
+        System.out.println("→ ✅ LOGIN SUCCESSFUL - Setting session and redirecting");
+
+        HttpSession session = request.getSession();
+        session.setAttribute("username", user.getUsername());
+        session.setAttribute("role", user.getRole());
+
+        if ("patient".equals(role)) {
+            PatientDAO patientDAO = new PatientDAO();
+            Patient patient = patientDAO.getPatientByUserId(user.getId());
+            if (patient != null) {
+                session.setAttribute("patientId", patient.getId());
+                System.out.println("→ ✅ Patient ID set: " + patient.getId());
+            } else {
+                System.out.println("→ ⚠️ No patient record found for user ID: " + user.getId());
             }
-        } else {
-            response.sendRedirect("pages/userProfile/login.jsp?error=Invalid credentials");
         }
+
+        String redirectUrl = switch (role) {
+            case "admin" -> "/pages/userProfile/adminDashboard.jsp";
+            case "dentist" -> "/pages/userProfile/dentistDashboard.jsp";
+            case "patient" -> "/pages/userProfile/patientDashboard.jsp";
+            default -> "/pages/userProfile/login.jsp?error=Unknown role";
+        };
+
+        System.out.println("→ 🚀 REDIRECTING TO: " + redirectUrl);
+        response.sendRedirect(request.getContextPath() + redirectUrl);
     }
 }
