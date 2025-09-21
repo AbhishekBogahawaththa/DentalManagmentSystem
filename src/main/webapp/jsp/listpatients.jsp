@@ -220,7 +220,7 @@
                 <thead>
                 <tr>
                     <th>NIC</th>
-                    <th>ID</th>
+                    <th>Patient ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
