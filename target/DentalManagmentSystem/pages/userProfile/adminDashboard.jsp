@@ -61,6 +61,7 @@
             background-color: rgba(255, 255, 255, 0.95);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 1rem 0;
+            z-index: 3;
         }
 
         .navbar-brand {
@@ -233,7 +234,7 @@
             </div>
             <h3>View Patient Records</h3>
             <p>Browse, search, and manage all patient records including personal details, medical history, and treatments.</p>
-            <a href="${pageContext.request.contextPath}/jsp/listpatients.jsp" class="btn-action">
+            <a href="${pageContext.request.contextPath}/PatientServlet" class="btn-action">
                 <i class="fas fa-list-ul me-2"></i> View All Patients
             </a>
         </div>
