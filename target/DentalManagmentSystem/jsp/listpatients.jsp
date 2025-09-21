@@ -21,6 +21,14 @@
     <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
+    <%
+        // Security check
+        if (session.getAttribute("username") == null) {
+            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp");
+            return;
+        }
+    %>
+
     <style>
         :root {
             --dark-blue: #00008B;
@@ -198,6 +206,16 @@
         <div class="patient-list">
             <h3><i class="fas fa-list"></i> All Patients</h3>
 
+            <!-- Add Button -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a href="${pageContext.request.contextPath}/PatientServlet?action=new" class="btn btn-outline-primary">
+                    <i class="fas fa-user-plus me-2"></i> Add New Patient
+                </a>
+                <a href="${pageContext.request.contextPath}/pages/userProfile/adminDashboard.jsp" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                </a>
+            </div>
+
             <table class="table table-hover align-middle">
                 <thead>
                 <tr>
@@ -217,25 +235,21 @@
                 <tbody>
                 <c:forEach var="p" items="${patients}">
                     <tr>
-                        <td>${p.nic != null ? p.nic : '—'}</td>
+                        <td>${p.nic}</td>
                         <td>${p.id}</td>
                         <td>${p.firstName}</td>
                         <td>${p.lastName}</td>
-                        <td><a href="mailto:${p.email}" class="text-decoration-none">${p.email}</a></td>
+                        <td><a href="mailto:${p.email}">${p.email}</a></td>
                         <td>${p.phone}</td>
-                        <td class="text-muted">${p.address != null && !p.address.isEmpty() ? p.address : '—'}</td>
-                        <td class="text-center">${p.dob != null ? p.dob : '—'}</td>
-                        <td>${p.gender != null ? p.gender : '—'}</td>
-                        <td class="text-muted">${p.medicalHistory != null && !p.medicalHistory.isEmpty() ? p.medicalHistory : '—'}</td>
+                        <td class="text-muted">${p.address}</td>
+                        <td class="text-center">${p.dob}</td>
+                        <td>${p.gender}</td>
+                        <td class="text-muted">${p.medicalHistory}</td>
                         <td class="text-center">
-                            <a href="${pageContext.request.contextPath}/patients?action=edit&id=${p.id}"
-                               class="btn btn-sm btn-outline-primary me-2 px-3 py-1"
-                               style="border-radius: 8px; font-weight: 500;">
+                            <a href="${pageContext.request.contextPath}/PatientServlet?action=edit&id=${p.id}" class="btn btn-sm btn-outline-primary me-2 px-3 py-1">
                                 <i class="fas fa-edit me-1"></i> Edit
                             </a>
-                            <a href="${pageContext.request.contextPath}/patients?action=delete&id=${p.id}"
-                               class="btn btn-sm btn-outline-danger px-3 py-1"
-                               style="border-radius: 8px; font-weight: 500;"
+                            <a href="${pageContext.request.contextPath}/PatientServlet?action=delete&id=${p.id}" class="btn btn-sm btn-outline-danger px-3 py-1"
                                onclick="return confirm('Are you sure you want to delete patient #${p.id} - ${p.firstName} ${p.lastName}?')">
                                 <i class="fas fa-trash-alt me-1"></i> Delete
                             </a>
