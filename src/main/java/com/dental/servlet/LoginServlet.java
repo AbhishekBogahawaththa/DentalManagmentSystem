@@ -55,18 +55,20 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        // Login successful
+        // ✅ Login successful
         System.out.println("→ ✅ LOGIN SUCCESSFUL - Setting session and redirecting");
 
         HttpSession session = request.getSession();
         session.setAttribute("username", user.getUsername());
         session.setAttribute("role", user.getRole());
+        session.setAttribute("userId", user.getId()); // ✅ Store userId for all roles
 
+        // ✅ If patient, also fetch and store patientId
         if ("patient".equals(role)) {
             PatientDAO patientDAO = new PatientDAO();
             Patient patient = patientDAO.getPatientByUserId(user.getId());
             if (patient != null) {
-                session.setAttribute("patientId", patient.getId());
+                session.setAttribute("patientId", patient.getId()); // ✅ This is what PatientMedicalHistoryServlet needs!
                 System.out.println("→ ✅ Patient ID set: " + patient.getId());
             } else {
                 System.out.println("→ ⚠️ No patient record found for user ID: " + user.getId());
