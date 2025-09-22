@@ -88,7 +88,8 @@
             display: block;
         }
 
-        .form-control {
+        .form-control,
+        .form-select {
             width: 100%;
             padding: 12px;
             border: 1px solid #d1d5db;
@@ -97,7 +98,8 @@
             transition: border-color 0.3s;
         }
 
-        .form-control:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--dark-blue);
             box-shadow: 0 0 0 3px rgba(0, 0, 139, 0.2);
             outline: none;
@@ -176,6 +178,16 @@
     </div>
 
     <div class="form-container">
+
+        <!-- ✅ Display success/error messages after redirect -->
+        <c:if test="${not empty param.message}">
+            <div class="alert alert-${param.messageType} alert-dismissible fade show" role="alert">
+                <i class="fas fa-${param.messageType == 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                    ${param.message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </c:if>
+
         <h2 class="form-title">
             <i class="fas fa-user-edit"></i>
             <c:choose>
@@ -184,35 +196,50 @@
             </c:choose>
         </h2>
 
-        <form action="${pageContext.request.contextPath}/patients" method="post">
-            <!-- Hidden field if editing -->
-            <c:if test="${patient != null}">
-                <input type="hidden" name="patientId" value="${patient.patientId}"/>
-            </c:if>
+        <form action="${pageContext.request.contextPath}/PatientServlet" method="post">
+            <input type="hidden" name="action" value="save">
 
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-id-card me-2"></i>NIC:</label>
-                <input type="number" class="form-control" name="nic" value="${patient.nic}" required placeholder="Enter 12-digit NIC number">
+            <!-- ✅ FIXED: Use patient.patientId (not patient.id) -->
+            <input type="hidden" name="id" value="${patient.patientId}" />
+
+            <div class="mb-3">
+                <label for="nic" class="form-label">NIC</label>
+                <input type="text" name="nic" id="nic" class="form-control" value="${patient.nic}">
             </div>
 
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-user me-2"></i>First Name:</label>
-                <input type="text" class="form-control" name="firstName" value="${patient.firstName}" required>
+            <div class="mb-3">
+                <label for="firstName">First Name *</label>
+                <input type="text" name="firstName" id="firstName" class="form-control" required value="${patient.firstName}">
             </div>
 
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-user me-2"></i>Last Name:</label>
-                <input type="text" class="form-control" name="lastName" value="${patient.lastName}" required>
+            <div class="mb-3">
+                <label for="lastName">Last Name *</label>
+                <input type="text" name="lastName" id="lastName" class="form-control" required value="${patient.lastName}">
             </div>
 
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-birthday-cake me-2"></i>Date of Birth:</label>
-                <input type="date" class="form-control" name="dateOfBirth" value="${patient.dateOfBirth}">
+            <div class="mb-3">
+                <label for="email">Email *</label>
+                <input type="email" name="email" id="email" class="form-control" required value="${patient.email}">
             </div>
 
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-venus-mars me-2"></i>Gender:</label>
-                <select class="form-control" name="gender" required>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="text" name="phone" id="phone" class="form-control" value="${patient.phone}">
+            </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" name="address" id="address" class="form-control" value="${patient.address}">
+            </div>
+
+            <div class="mb-3">
+                <label for="dob" class="form-label">Date of Birth</label>
+                <input type="date" name="dob" id="dob" class="form-control" value="${patient.dob}">
+            </div>
+
+            <div class="mb-3">
+                <label for="gender" class="form-label">Gender</label>
+                <select name="gender" id="gender" class="form-select">
                     <option value="">Select Gender</option>
                     <option value="Male" ${patient.gender == 'Male' ? 'selected' : ''}>Male</option>
                     <option value="Female" ${patient.gender == 'Female' ? 'selected' : ''}>Female</option>
@@ -220,42 +247,26 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-phone me-2"></i>Phone:</label>
-                <input type="tel" class="form-control" name="phone" value="${patient.phone}" required>
+            <div class="mb-3">
+                <label for="medicalHistory" class="form-label">Medical History</label>
+                <textarea name="medicalHistory" id="medicalHistory" class="form-control" rows="4"
+                          placeholder="Allergies, conditions, medications...">${patient.medicalHistory}</textarea>
             </div>
 
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-envelope me-2"></i>Email:</label>
-                <input type="email" class="form-control" name="email" value="${patient.email}">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Address:</label>
-                <input type="text" class="form-control" name="address" value="${patient.address}">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-notes-medical me-2"></i>Medical History:</label>
-                <textarea class="form-control" name="medicalHistory" rows="5" placeholder="Allergies, conditions, medications...">${patient.medicalHistory}</textarea>
-            </div>
-
-            <button type="submit" class="btn btn-submit">
-                <i class="fas fa-save me-2"></i>
-                <c:choose>
-                    <c:when test="${patient != null}">Update Patient</c:when>
-                    <c:otherwise>Save Patient</c:otherwise>
-                </c:choose>
+            <!-- ✅ FIXED: Use btn-submit class (matches your CSS) -->
+            <button type="submit" class="btn btn-submit w-100 mb-3">
+                <i class="fas fa-save me-2"></i> Save Patient
             </button>
-        </form>
 
-        <a href="${pageContext.request.contextPath}/patients" class="btn btn-back mt-3">
-            <i class="fas fa-arrow-left me-2"></i>Back to Patient List
-        </a>
+            <!-- Back Button -->
+            <a href="${pageContext.request.contextPath}/jsp/listpatients.jsp" class="btn btn-back w-100">
+                <i class="fas fa-arrow-left me-2"></i> Back to Patient List
+            </a>
+        </form>
     </div>
 </div>
 
-<!-- Bootstrap JS -->
+<!-- Bootstrap JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
