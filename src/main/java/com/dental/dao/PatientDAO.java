@@ -100,14 +100,13 @@ public class PatientDAO {
         return null;
     }
 
-    // Add new patient
     public void addPatient(Patient patient) {
         String sql = "INSERT INTO patient (user_id, nic, first_name, last_name, email, phone, address, dob, gender, medical_history) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setObject(1, patient.getUserId()); // Handles null
+            stmt.setObject(1, patient.getUserId());
             stmt.setString(2, patient.getNic());
             stmt.setString(3, patient.getFirstName());
             stmt.setString(4, patient.getLastName());
@@ -119,23 +118,27 @@ public class PatientDAO {
             stmt.setString(10, patient.getMedicalHistory());
 
             int affectedRows = stmt.executeUpdate();
+            System.out.println("✅ INSERT affected " + affectedRows + " row(s)");
+
             if (affectedRows == 0) {
                 throw new SQLException("Creating patient failed, no rows affected.");
             }
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    patient.setId(generatedKeys.getInt(1)); // Set generated ID back into object
+                    patient.setId(generatedKeys.getInt(1));
+                    System.out.println("🆕 New patient ID assigned: " + patient.getId());
                 } else {
                     throw new SQLException("Creating patient failed, no ID obtained.");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Insert failed: " + e.getMessage(), e); // 🔥 TEMP
         }
     }
 
-    // Update patient
+    // In PatientDAO.java
     public void updatePatient(Patient patient) {
         String sql = "UPDATE patient SET user_id=?, nic=?, first_name=?, last_name=?, email=?, phone=?, address=?, dob=?, gender=?, medical_history=? WHERE id=?";
 
@@ -152,11 +155,19 @@ public class PatientDAO {
             stmt.setString(8, patient.getDob());
             stmt.setString(9, patient.getGender());
             stmt.setString(10, patient.getMedicalHistory());
-            stmt.setInt(11, patient.getId()); // ✅ Was missing! Critical for WHERE clause
+            stmt.setInt(11, patient.getId());
 
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("✅ UPDATE affected " + rowsAffected + " row(s) for ID: " + patient.getId());
+
+            if (rowsAffected == 0) {
+                System.err.println("❌ WARNING: No patient found with ID " + patient.getId() + ". Check if record exists.");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
+            // 🔥 TEMP: Throw to see error in browser during testing
+            throw new RuntimeException("Update failed: " + e.getMessage(), e);
         }
     }
 
