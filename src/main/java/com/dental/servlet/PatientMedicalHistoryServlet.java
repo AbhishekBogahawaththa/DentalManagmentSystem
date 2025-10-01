@@ -1,7 +1,6 @@
 package com.dental.servlet;
 
 import com.dental.dao.MedicalRecordDAO;
-import com.dental.dao.PatientDAO;
 import com.dental.model.MedicalRecord;
 
 import javax.servlet.ServletException;
@@ -17,35 +16,32 @@ public class PatientMedicalHistoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Get session
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("username") == null) {
-            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Please login first");
+            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Session expired. Please login again.");
             return;
         }
 
-        // Get patientId from session
+        String role = (String) session.getAttribute("role");
+        if (!"patient".equals(role)) {
+            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Access denied. Patients only.");
+            return;
+        }
+
+        // ✅ Get patientId from session (guaranteed to exist after LoginServlet fix)
         Integer patientId = (Integer) session.getAttribute("patientId");
         if (patientId == null) {
-            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Patient ID not found. Please login again.");
+            System.err.println("❌ CRITICAL: patientId is null for patient user!");
+            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp?error=Account misconfiguration. Contact admin.");
             return;
         }
 
         try {
-            // ✅ FIXED: Use MedicalRecordDAO to fetch records
             MedicalRecordDAO recordDAO = new MedicalRecordDAO();
             List<MedicalRecord> records = recordDAO.getMedicalRecordsByPatientId(patientId);
 
-            // Optional: Get patient's full name for display
-            String patientName = (String) session.getAttribute("patientFullName");
-            if (patientName == null) {
-                // Fallback: use username or fetch from DB
-                patientName = (String) session.getAttribute("username");
-                // Optional: fetch from PatientDAO if needed
-                // PatientDAO patientDAO = new PatientDAO();
-                // Patient p = patientDAO.getPatientById(patientId);
-                // patientName = p.getFirstName() + " " + p.getLastName();
-            }
+            // Get patient name for display
+            String patientName = (String) session.getAttribute("username"); // Fallback to username
 
             request.setAttribute("medicalRecords", records);
             request.setAttribute("patientName", patientName);
@@ -54,7 +50,7 @@ public class PatientMedicalHistoryServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/pages/userProfile/patientDashboard.jsp?error=Failed to load medical history.");
+            response.sendRedirect(request.getContextPath() + "/pages/userProfile/patientDashboard.jsp?error=Failed to load medical records. Please try again.");
         }
     }
 }
