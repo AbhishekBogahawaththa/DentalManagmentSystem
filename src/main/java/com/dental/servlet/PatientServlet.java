@@ -15,6 +15,7 @@ import java.util.List;
 
 @WebServlet("/PatientServlet")
 public class PatientServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
     private PatientDAO patientDAO = new PatientDAO();
 
     @Override
@@ -22,29 +23,55 @@ public class PatientServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        String contextPath = request.getContextPath();
 
         try {
             if ("new".equals(action)) {
+                // Forward to form for new patient (no data)
                 request.getRequestDispatcher("/jsp/patientForm.jsp").forward(request, response);
-            } else if ("edit".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                Patient patient = patientDAO.getPatientById(id);
-                request.setAttribute("patient", patient);
-                request.getRequestDispatcher("/jsp/patientForm.jsp").forward(request, response);
-            } else if ("delete".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                patientDAO.deletePatient(id);
-                response.sendRedirect(request.getContextPath() + "/jsp/listpatients.jsp?message=Patient deleted successfully.&messageType=success");
-            } else {
+            }
+            else if ("edit".equals(action)) {
+                String idParam = request.getParameter("id");
+                if (idParam == null || idParam.trim().isEmpty()) {
+                    response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Patient ID is required.&messageType=danger");
+                    return;
+                }
+                try {
+                    int id = Integer.parseInt(idParam);
+                    Patient patient = patientDAO.getPatientById(id);
+                    if (patient == null) {
+                        response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Patient not found.&messageType=warning");
+                        return;
+                    }
+                    request.setAttribute("patient", patient);
+                    request.getRequestDispatcher("/jsp/patientForm.jsp").forward(request, response);
+                } catch (NumberFormatException e) {
+                    response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Invalid patient ID.&messageType=danger");
+                }
+            }
+            else if ("delete".equals(action)) {
+                String idParam = request.getParameter("id");
+                if (idParam != null && !idParam.trim().isEmpty()) {
+                    try {
+                        int id = Integer.parseInt(idParam);
+                        patientDAO.deletePatient(id);
+                        response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Patient deleted successfully.&messageType=success");
+                    } catch (NumberFormatException e) {
+                        response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Invalid ID for deletion.&messageType=danger");
+                    }
+                } else {
+                    response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Missing patient ID for deletion.&messageType=danger");
+                }
+            }
+            else {
                 // Default: list all patients
                 List<Patient> patients = patientDAO.getAllPatients();
-                System.out.println("✅ Retrieved " + patients.size() + " patients from DB");
                 request.setAttribute("patients", patients);
                 request.getRequestDispatcher("/jsp/listpatients.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/jsp/listpatients.jsp?message=An error occurred.&messageType=danger");
+            response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=An unexpected error occurred.&messageType=danger");
         }
     }
 
@@ -53,19 +80,23 @@ public class PatientServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        String contextPath = request.getContextPath();
 
         try {
             if ("save".equals(action)) {
                 int id = 0;
                 String idParam = request.getParameter("id");
                 if (idParam != null && !idParam.trim().isEmpty()) {
-                    id = Integer.parseInt(idParam);
+                    try {
+                        id = Integer.parseInt(idParam);
+                    } catch (NumberFormatException e) {
+                        // Treat as new if invalid ID
+                        id = 0;
+                    }
                 }
 
                 Patient patient = new Patient();
-
-                // ✅ FIXED: Use setId(int), not setPatientId(...)
-                patient.setId(id); // ← 0 for new, actual ID for update
+                patient.setId(id); // 0 means new
 
                 patient.setNic(request.getParameter("nic"));
                 patient.setFirstName(request.getParameter("firstName"));
@@ -74,12 +105,12 @@ public class PatientServlet extends HttpServlet {
                 patient.setPhone(request.getParameter("phone"));
                 patient.setAddress(request.getParameter("address"));
 
-                // Handle DOB safely
+                // Parse and store DOB as "yyyy-MM-dd"
                 String dobParam = request.getParameter("dob");
                 if (dobParam != null && !dobParam.trim().isEmpty()) {
                     try {
-                        LocalDate date = LocalDate.parse(dobParam); // Validate + normalize
-                        patient.setDateOfBirth(date.toString());    // Store as "yyyy-MM-dd"
+                        LocalDate date = LocalDate.parse(dobParam);
+                        patient.setDateOfBirth(date.toString()); // ISO format
                     } catch (DateTimeParseException e) {
                         patient.setDateOfBirth(null);
                     }
@@ -92,15 +123,17 @@ public class PatientServlet extends HttpServlet {
 
                 if (id == 0) {
                     patientDAO.addPatient(patient);
-                    response.sendRedirect(request.getContextPath() + "/jsp/listpatients.jsp?message=Patient added successfully.&messageType=success");
+                    response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Patient added successfully.&messageType=success");
                 } else {
                     patientDAO.updatePatient(patient);
-                    response.sendRedirect(request.getContextPath() + "/jsp/listpatients.jsp?message=Patient updated successfully.&messageType=success");
+                    response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Patient updated successfully.&messageType=success");
                 }
+            } else {
+                response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Unknown action.&messageType=warning");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/jsp/listpatients.jsp?message=Failed to save patient.&messageType=danger");
+            response.sendRedirect(contextPath + "/jsp/listpatients.jsp?message=Failed to save patient.&messageType=danger");
         }
     }
 }
