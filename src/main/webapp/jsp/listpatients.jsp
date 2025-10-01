@@ -20,14 +20,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <%
-        // Security check
-        if (session.getAttribute("username") == null) {
-            response.sendRedirect(request.getContextPath() + "/pages/userProfile/login.jsp");
-            return;
-        }
-    %>
+    <!-- Professional Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -39,7 +33,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
             margin: 0;
             padding: 0;
             background: url('https://images.pexels.com/photos/7803060/pexels-photo-7803060.jpeg?auto=compress&cs=tinysrgb&w=1920') no-repeat center center fixed;
@@ -47,6 +41,8 @@
             color: white;
             min-height: 100vh;
             position: relative;
+            font-weight: 400;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         body::before {
@@ -135,6 +131,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 1.5rem;
         }
 
         .patient-list h3 i {
@@ -147,6 +144,7 @@
             border: none;
             font-weight: 600;
             white-space: nowrap;
+            padding: 15px;
         }
 
         .table tbody tr:hover {
@@ -157,6 +155,11 @@
             vertical-align: middle;
             padding: 15px;
             white-space: nowrap;
+            color: #333;
+        }
+
+        .table td.text-muted {
+            color: #6c757d !important;
         }
 
         @media (max-width: 992px) {
@@ -175,6 +178,9 @@
             .table td, .table th {
                 padding: 10px;
                 font-size: 0.9rem;
+            }
+            .patient-list h3 {
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -239,7 +245,7 @@
                         <td>${p.id}</td>
                         <td>${p.firstName}</td>
                         <td>${p.lastName}</td>
-                        <td><a href="mailto:${p.email}">${p.email}</a></td>
+                        <td><a href="mailto:${p.email}" class="text-decoration-none">${p.email}</a></td>
                         <td>${p.phone}</td>
                         <td class="text-muted">${p.address}</td>
                         <td class="text-center">${p.dob}</td>
