@@ -61,18 +61,25 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("username", user.getUsername());
         session.setAttribute("role", user.getRole());
-        session.setAttribute("userId", user.getId()); // ✅ Store userId for all roles
+        session.setAttribute("userId", user.getId());
 
-        // ✅ If patient, also fetch and store patientId
+        // ✅ FIXED: Set patientId for patients using userId as fallback
         if ("patient".equals(role)) {
+            Integer patientId = null;
+
+            // Try to get patient by user_id first (if linked)
             PatientDAO patientDAO = new PatientDAO();
             Patient patient = patientDAO.getPatientByUserId(user.getId());
             if (patient != null) {
-                session.setAttribute("patientId", patient.getId()); // ✅ This is what PatientMedicalHistoryServlet needs!
-                System.out.println("→ ✅ Patient ID set: " + patient.getId());
+                patientId = patient.getId();
             } else {
-                System.out.println("→ ⚠️ No patient record found for user ID: " + user.getId());
+                // Fallback: assume user.id == patient.id (common in simple systems)
+                patientId = user.getId();
+                System.out.println("→ ⚠️ No patient record found for user_id=" + user.getId() + ". Using user.id as patientId.");
             }
+
+            session.setAttribute("patientId", patientId);
+            System.out.println("→ ✅ Patient ID set: " + patientId);
         }
 
         String redirectUrl = switch (role) {
