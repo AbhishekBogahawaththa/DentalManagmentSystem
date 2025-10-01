@@ -199,8 +199,8 @@
         <form action="${pageContext.request.contextPath}/PatientServlet" method="post">
             <input type="hidden" name="action" value="save">
 
-            <!-- ✅ FIXED: Use patient.patientId (not patient.id) -->
-            <input type="hidden" name="id" value="${patient.patientId}" />
+            <!-- ✅ Use patient.id (matches getId() in Patient model) -->
+            <input type="hidden" name="id" value="${patient.id}" />
 
             <div class="mb-3">
                 <label for="nic" class="form-label">NIC</label>
