@@ -235,9 +235,9 @@
             </div>
             <h3>View Patient Records</h3>
             <p>Access and review detailed medical records, treatment history, and upcoming appointments for your patients.</p>
-            <a href="${pageContext.request.contextPath}/jsp/listpatients.jsp" class="btn-action">
+            <a href="${pageContext.request.contextPath}/PatientServlet" class="btn-action">
                 <i class="fas fa-eye me-2"></i> View Records
-            </a>
+            </a>>
         </div>
 
         <!-- Optional: Add More Cards Later (e.g., Schedule, Notifications, etc.) -->
