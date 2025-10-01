@@ -220,9 +220,9 @@
       <i class="fas fa-tooth"></i> Dental Clinic Management
     </a>
     <div class="d-flex align-items-center">
-            <span class="navbar-text me-3">
-                Logged in as: <strong><%= username %></strong>
-            </span>
+      <span class="navbar-text me-3">
+          Logged in as: <strong><%= username %></strong>
+      </span>
       <a href="${pageContext.request.contextPath}/LogoutServlet" class="btn btn-logout">
         <i class="fas fa-sign-out-alt me-1"></i> Logout
       </a>

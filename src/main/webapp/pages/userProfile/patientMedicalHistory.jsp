@@ -215,30 +215,51 @@
         <!-- Medical History Card -->
         <div class="history-card">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3>Medical History for: ${patientName}</h3>
+                <h3>
+                    <i class="fas fa-file-medical me-2"></i>
+                    Medical History for: <%= session.getAttribute("username") %>
+                </h3>
+            </div>
 
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Procedure</th>
-                        <th>Dentist</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="record" items="${medicalRecords}">
+            <c:choose>
+                <c:when test="${empty medicalRecords}">
+                    <div class="alert alert-info">
+                        No medical records found.
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <table class="table">
+                        <thead>
                         <tr>
-                            <td>${record.date}</td>
-                            <td>${record.procedureName}</td>
-                            <td>${record.dentist}</td>
-                            <td>${record.status}</td>
+                            <th>Date</th>
+                            <th>Procedure</th>
+                            <th>Dentist</th>
+                            <th>Status</th>
                         </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="record" items="${medicalRecords}">
+                            <tr>
+                                <td>${record.date}</td>
+                                <td>${record.procedureName}</td>
+                                <td>${record.dentist}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${record.status == 'Completed'}">
+                                            <span class="badge badge-completed">Completed</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="badge badge-pending">${record.status}</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:otherwise>
+            </c:choose>
         </div>
-
     </div>
 </div>
 </div>

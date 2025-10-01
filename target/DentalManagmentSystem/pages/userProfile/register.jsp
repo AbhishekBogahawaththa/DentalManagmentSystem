@@ -17,6 +17,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
         :root {
@@ -191,8 +198,13 @@
             <input type="password" name="password" class="form-control" required placeholder="Create a password">
         </div>
         <div class="mb-3">
-            <label class="form-label">Full Name:</label>
-            <input type="text" name="fullName" class="form-control" required placeholder="Enter your full name">
+            <label class="form-label">Role:</label>
+            <select name="role" class="form-control" required>
+                <option value="">-- Select Role --</option>
+                <option value="admin">Admin</option>
+                <option value="dentist">Dentist</option>
+                <option value="patient">Patient</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-register">
             <i class="fas fa-user-plus me-2"></i> Register
