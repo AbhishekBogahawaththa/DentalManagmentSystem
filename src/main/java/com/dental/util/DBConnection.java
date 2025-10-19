@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 public class DBConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/DentalClinic?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USERNAME = "root";          // ← Update if needed
-    private static final String PASSWORD = "hpCAJ@2004";  // ← UPDATE THIS!
+    private static final String PASSWORD = "2";  // ← UPDATE THIS!
 
     static {
         try {
