@@ -3,6 +3,7 @@
   <component name="WebContextManager">
     <option name="state">
       <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/patientForm.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/pages/userProfile/patientMedicalHistory.jsp" value="file://$PROJECT_DIR$/src/main/webapp/pages/userProfile" />
       </map>
     </option>

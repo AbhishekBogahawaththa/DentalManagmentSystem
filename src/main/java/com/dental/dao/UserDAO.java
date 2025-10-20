@@ -5,43 +5,50 @@ import com.dental.util.DBConnection;
 
 import java.sql.*;
 
+import static com.dental.util.DBConnection.getConnection;
+
 public class UserDAO {
 
     public User getUserByUsernameAndPassword(String username, String password) {
-        System.out.println("→ DAO: Searching for user: " + username);
+        System.out.println("🔍 [UserDAO] Called with username='" + username + "', password='" + password + "'");
 
-        String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
-        try (Connection conn = DBConnection.getConnection();
+        String sql = "SELECT id, username, password, role FROM user WHERE username = ? AND password = ?";
+
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, username);
             stmt.setString(2, password);
+
+            System.out.println("🔍 [UserDAO] Executing SQL: " + sql.replace("?", "'" + username + "' and '" + password + "'"));
+
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
                 user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
                 user.setRole(rs.getString("role"));
-
-                System.out.println("→ DAO: ✅ FOUND USER: " + user.getUsername());
+                System.out.println("✅ [UserDAO] User FOUND: " + user.getUsername() + " (ID: " + user.getId() + ", Role: " + user.getRole() + ")");
                 return user;
             } else {
-                System.out.println("→ DAO: ❌ NO USER FOUND with username: " + username);
+                System.out.println("❌ [UserDAO] NO USER FOUND for username='" + username + "'");
+                return null;
             }
-        } catch (Exception e) {
-            System.err.println("→ DAO: ❌ EXCEPTION:");
+        } catch (SQLException e) {
+            System.err.println("🔥 [UserDAO] SQL ERROR: " + e.getMessage());
             e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     // ✅ NEW METHOD: Add new user
     public void addUser(User user) throws Exception {
         String sql = "INSERT INTO user (username, password, role) VALUES (?, ?, ?)";
 
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, user.getUsername());

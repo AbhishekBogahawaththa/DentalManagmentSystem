@@ -6,52 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dental Clinic - Login</title>
 
-    <!-- Bootstrap 5 CSS (fixed extra spaces) -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome 6 (fixed extra spaces) -->
+    <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- AOS Animation (fixed extra spaces) -->
+    <!-- AOS Animation -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --dark-blue: #00008B;
+            --primary-dark: #0a0f2c;
+            --secondary-dark: #121a3b;
+            --accent-blue: #2a52be;
             --light-blue: #60a5fa;
-            --bg-gray: #f9fafb;
-            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --glow-blue: #4d7cff;
+            --text-light: #f0f4f8;
+            --card-bg: rgba(25, 35, 65, 0.85);
+            --card-border: rgba(70, 90, 150, 0.3);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --hover-glow: 0 0 20px rgba(77, 124, 255, 0.4);
         }
 
         body {
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-gray);
+            background: url('https://cdn.pixabay.com/photo/2024/04/30/07/18/dentist-8729627_1280.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-light);
+            min-height: 100vh;
+            position: relative;
+            filter: brightness(1.05) saturate(1.1);
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 15, 44, 0.4) 0%, rgba(18, 26, 59, 0.5) 100%);
+            z-index: 1;
         }
 
         .navbar {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(18, 26, 59, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             padding: 1rem 0;
+            border-bottom: 1px solid var(--card-border);
+            z-index: 3;
         }
 
         .navbar-brand {
             font-weight: 700;
             font-size: 1.5rem;
-            color: var(--dark-blue);
+            color: var(--light-blue) !important;
             display: flex;
             align-items: center;
             gap: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .navbar-brand i { color: var(--dark-blue); font-size: 1.8rem; }
+        .navbar-brand i {
+            color: var(--light-blue);
+            font-size: 1.8rem;
+            text-shadow: 0 0 8px var(--glow-blue);
+        }
 
-        .nav-link { color: #333; font-weight: 500; transition: all 0.3s ease; }
-        .nav-link:hover { color: var(--dark-blue); }
+        .nav-link {
+            color: var(--text-light);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .nav-link:hover {
+            color: var(--light-blue);
+            text-decoration: underline;
+        }
 
         .hero {
-            background: url('https://cdn.pixabay.com/photo/2024/04/30/07/18/dentist-8729627_1280.jpg') no-repeat center center;
-            background-size: cover;
-            background-attachment: fixed;
             height: 80vh;
             position: relative;
             display: flex;
@@ -62,16 +98,6 @@
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 1;
-        }
-
-        /* Ensure all content is above overlay */
         .hero > * {
             position: relative;
             z-index: 2;
@@ -79,67 +105,128 @@
 
         .hero-content {
             max-width: 600px;
-            /* Left-aligned text */
         }
 
-        .hero h1 { font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.2; font-weight: 700; color: ghostwhite; }
-        .hero p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            font-weight: 700;
+            color: var(--text-light);
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+        }
 
         .btn-contact {
-            background-color: white;
-            color: var(--dark-blue);
-            border: 2px solid var(--dark-blue);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light-blue);
+            border: 1px solid var(--light-blue);
             padding: 12px 30px;
             font-weight: 600;
             border-radius: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .btn-contact:hover {
-            background-color: var(--dark-blue);
+            background: var(--accent-blue);
             color: white;
             transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            box-shadow: var(--hover-glow);
+            border-color: transparent;
         }
 
-        .contact-info { margin-top: 1rem; font-size: 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; }
-        .contact-info strong { color: white; }
+        .contact-info {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .contact-info strong {
+            color: var(--light-blue);
+        }
 
         .login-card {
             width: 100%;
             max-width: 360px;
             padding: 30px;
             border-radius: 16px;
-            background: white;
-            border: 1px solid #e5e7eb;
-            box-shadow: var(--card-shadow);
-            z-index: 3; /* ✅ Critical: ensures interactivity */
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
+            z-index: 3;
+            backdrop-filter: blur(10px);
+            color: var(--text-light);
         }
 
-        .login-header { text-align: center; margin-bottom: 25px; }
-        .login-header i { color: var(--dark-blue); font-size: 1.8rem; margin-right: 10px; }
-        .login-header h4 { color: var(--dark-blue); font-weight: 600; margin: 0; }
+        .login-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-        .input-group-text { background: #f3f4f6; border-radius: 8px 0 0 8px; border: 1px solid #d1d5db; }
+        .login-header i {
+            color: var(--light-blue);
+            font-size: 1.8rem;
+            margin-right: 10px;
+            text-shadow: 0 0 8px var(--glow-blue);
+        }
+
+        .login-header h4 {
+            color: var(--light-blue);
+            font-weight: 600;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-group-text {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light-blue);
+            border-radius: 8px 0 0 8px;
+        }
 
         .form-control {
             width: 100%;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 0 8px 8px 0;
             font-size: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         .form-control:focus {
-            border-color: var(--dark-blue);
-            box-shadow: 0 0 10px rgba(0,0,139,0.3);
+            border-color: var(--light-blue);
+            box-shadow: 0 0 10px rgba(77, 124, 255, 0.3);
             outline: none;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .form-select {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .form-select:focus {
+            border-color: var(--light-blue);
+            box-shadow: 0 0 10px rgba(77, 124, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .btn-login {
-            background: var(--dark-blue);
+            background: var(--accent-blue);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -148,25 +235,40 @@
             width: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,139,0.3);
+            box-shadow: 0 4px 10px rgba(42, 82, 190, 0.4);
             font-size: 1.1rem;
         }
 
         .btn-login:hover {
-            background: #00006b;
+            background: #1e3c72;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,139,0.4);
+            box-shadow: 0 6px 15px rgba(42, 82, 190, 0.6);
         }
 
         .register-link {
             margin-top: 20px;
             text-align: center;
-            color: #6b7280;
+            color: var(--text-muted);
             font-size: 0.95rem;
         }
 
-        .register-link a { color: var(--dark-blue); font-weight: 600; text-decoration: none; }
-        .register-link a:hover { text-decoration: underline; }
+        .register-link a {
+            color: var(--light-blue);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast Styling */
+        .toast {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            backdrop-filter: blur(5px);
+        }
 
         @media (max-width: 768px) {
             .hero {
@@ -178,12 +280,16 @@
             .hero-content {
                 margin-bottom: 20px;
             }
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
             .login-card {
                 max-width: 100%;
                 margin: 0 auto;
             }
-            .contact-info { align-items: center; }
+            .contact-info {
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -211,7 +317,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link " href="#">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
@@ -221,7 +327,6 @@
 </nav>
 
 <section class="hero">
-    <!-- Hero Content on LEFT -->
     <div class="hero-content" data-aos="fade-right">
         <h1>Your Brightest Smile Starts Here</h1>
         <p>Experience compassionate, expert dental care in a modern, welcoming environment.</p>
@@ -232,7 +337,6 @@
         </div>
     </div>
 
-    <!-- Login Card on RIGHT -->
     <div class="login-card" data-aos="fade-left">
         <div class="login-header">
             <i class="fas fa-user-circle"></i>
@@ -250,7 +354,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Role:</label>
-                <select name="role" class="form-control" required>
+                <select name="role" class="form-select" required>
                     <option value="admin">Admin</option>
                     <option value="dentist">Dentist</option>
                     <option value="patient">Patient</option>

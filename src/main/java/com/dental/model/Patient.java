@@ -36,18 +36,6 @@ public class Patient {
 
     /**
      * Full constructor for creating a Patient with all fields.
-     *
-     * @param id              Primary key (auto-generated, use 0 for new patients)
-     * @param userId          Optional user ID (if linked to user account)
-     * @param nic             National ID
-     * @param firstName       First name
-     * @param lastName        Last name
-     * @param email           Email address
-     * @param phone           Phone number
-     * @param address         Physical address
-     * @param dob             Date of birth (format: "yyyy-MM-dd")
-     * @param gender          Gender
-     * @param medicalHistory  Medical history notes
      */
     public Patient(int id, Integer userId, String nic, String firstName, String lastName,
                    String email, String phone, String address, String dob, String gender,

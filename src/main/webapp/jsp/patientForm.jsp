@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 9/18/2025
-  Time: 8:30 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -14,21 +7,29 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --dark-blue: #00008B;
+            --primary-dark: #0a0f2c;
+            --secondary-dark: #121a3b;
+            --accent-blue: #2a52be;
             --light-blue: #60a5fa;
-            --bg-gray: #f9fafb;
-            --text-color: #1f2937;
-            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --glow-blue: #4d7cff;
+            --text-light: #f0f4f8;
+            --card-bg: rgba(25, 35, 65, 0.9);
+            --card-border: rgba(70, 90, 150, 0.3);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-gray);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
             margin: 0;
             padding: 40px 20px;
+            color: var(--text-light);
+            min-height: 100vh;
         }
 
         .form-header {
@@ -37,36 +38,39 @@
         }
 
         .form-header i {
-            color: var(--dark-blue);
+            color: var(--light-blue);
             font-size: 2.5rem;
             margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--glow-blue);
         }
 
         .form-header h1 {
-            color: var(--dark-blue);
+            color: var(--light-blue);
             font-weight: 700;
             margin: 0;
             font-size: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .form-header p {
-            color: #555;
+            color: var(--text-muted);
             font-size: 1.1rem;
             margin: 10px 0 0;
         }
 
         .form-container {
-            background: white;
+            background: var(--card-bg);
             padding: 40px;
             border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid #e5e7eb;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
             max-width: 800px;
             margin: 0 auto;
+            backdrop-filter: blur(10px);
         }
 
         .form-title {
-            color: var(--dark-blue);
+            color: var(--light-blue);
             font-weight: 700;
             text-align: center;
             margin-bottom: 30px;
@@ -75,15 +79,12 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-        }
-
-        .form-title i {
-            color: var(--dark-blue);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .form-label {
             font-weight: 600;
-            color: #333;
+            color: var(--text-light);
             margin-bottom: 8px;
             display: block;
         }
@@ -92,21 +93,24 @@
         .form-select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         .form-control:focus,
         .form-select:focus {
-            border-color: var(--dark-blue);
-            box-shadow: 0 0 0 3px rgba(0, 0, 139, 0.2);
+            border-color: var(--light-blue);
+            box-shadow: 0 0 0 3px rgba(77, 124, 255, 0.3);
             outline: none;
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .btn-submit {
-            background: var(--dark-blue);
+            background: var(--accent-blue);
             color: white;
             border: none;
             padding: 14px 28px;
@@ -115,19 +119,19 @@
             width: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 139, 0.3);
+            box-shadow: 0 4px 10px rgba(42, 82, 190, 0.4);
             font-size: 1.1rem;
             margin-bottom: 15px;
         }
 
         .btn-submit:hover {
-            background: #00006b;
+            background: #1e3c72;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 139, 0.4);
+            box-shadow: 0 6px 15px rgba(42, 82, 190, 0.6);
         }
 
         .btn-back {
-            background: #6b7280;
+            background: rgba(100, 116, 139, 0.4);
             color: white;
             border: none;
             padding: 14px 28px;
@@ -140,7 +144,7 @@
         }
 
         .btn-back:hover {
-            background: #4b5563;
+            background: rgba(74, 85, 99, 0.6);
             transform: translateY(-2px);
         }
 
@@ -148,8 +152,21 @@
             margin-bottom: 20px;
         }
 
-        .row > div {
-            margin-bottom: 20px;
+        .alert {
+            border: none;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #a7f3d0;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fecaca;
         }
 
         @media (max-width: 768px) {
@@ -179,7 +196,6 @@
 
     <div class="form-container">
 
-        <!-- ✅ Display success/error messages after redirect -->
         <c:if test="${not empty param.message}">
             <div class="alert alert-${param.messageType} alert-dismissible fade show" role="alert">
                 <i class="fas fa-${param.messageType == 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
@@ -198,8 +214,6 @@
 
         <form action="${pageContext.request.contextPath}/PatientServlet" method="post">
             <input type="hidden" name="action" value="save">
-
-            <!-- ✅ Use patient.id (matches getId() in Patient model) -->
             <input type="hidden" name="id" value="${patient.id}" />
 
             <div class="mb-3">
@@ -253,12 +267,10 @@
                           placeholder="Allergies, conditions, medications...">${patient.medicalHistory}</textarea>
             </div>
 
-            <!-- ✅ FIXED: Use btn-submit class (matches your CSS) -->
             <button type="submit" class="btn btn-submit w-100 mb-3">
                 <i class="fas fa-save me-2"></i> Save Patient
             </button>
 
-            <!-- Back Button -->
             <a href="${pageContext.request.contextPath}/jsp/listpatients.jsp" class="btn btn-back w-100">
                 <i class="fas fa-arrow-left me-2"></i> Back to Patient List
             </a>
@@ -266,8 +278,6 @@
     </div>
 </div>
 
-<!-- Bootstrap JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

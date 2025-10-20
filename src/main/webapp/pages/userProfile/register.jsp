@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Abhishek
-  Date: 02-09-2025
-  Time: 09:06
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,21 +10,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome 6 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
         :root {
-            --dark-blue: #00008B;
+            --primary-dark: #0a0f2c;
+            --secondary-dark: #121a3b;
+            --accent-blue: #2a52be;
             --light-blue: #60a5fa;
-            --bg-gray: #f9fafb;
-            --text-color: #1f2937;
-            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --glow-blue: #4d7cff;
+            --text-light: #f0f4f8;
+            --card-bg: rgba(25, 35, 65, 0.85);
+            --card-border: rgba(70, 90, 150, 0.3);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         body {
@@ -54,20 +44,22 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, rgba(10, 15, 44, 0.7) 0%, rgba(18, 26, 59, 0.85) 100%);
             z-index: 0;
         }
 
         .register-container {
-            background: white;
+            background: var(--card-bg);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow);
             width: 360px;
             z-index: 2;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
             animation: fadeIn 0.8s ease-out;
             position: relative;
+            color: var(--text-light);
         }
 
         @keyframes fadeIn {
@@ -81,20 +73,22 @@
         }
 
         .register-header i {
-            color: var(--dark-blue);
+            color: var(--light-blue);
             font-size: 1.8rem;
             margin-bottom: 10px;
+            text-shadow: 0 0 8px var(--glow-blue);
         }
 
         .register-header h4 {
-            color: var(--dark-blue);
+            color: var(--light-blue);
             font-weight: 600;
             margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .form-label {
             font-weight: 600;
-            color: #333;
+            color: var(--text-light);
             margin-bottom: 8px;
             display: block;
         }
@@ -102,20 +96,35 @@
         .form-control {
             width: 100%;
             padding: 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         .form-control:focus {
-            border-color: var(--dark-blue);
-            box-shadow: 0 0 0 3px rgba(0, 0, 139, 0.2);
+            border-color: var(--light-blue);
+            box-shadow: 0 0 0 3px rgba(77, 124, 255, 0.3);
             outline: none;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .form-select {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-select:focus {
+            border-color: var(--light-blue);
+            box-shadow: 0 0 0 3px rgba(77, 124, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .btn-register {
-            background: var(--dark-blue);
+            background: var(--accent-blue);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -124,25 +133,25 @@
             width: 100%;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 139, 0.3);
+            box-shadow: 0 4px 10px rgba(42, 82, 190, 0.4);
             font-size: 1.1rem;
         }
 
         .btn-register:hover {
-            background: #00006b;
+            background: #1e3c72;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 139, 0.4);
+            box-shadow: 0 6px 15px rgba(42, 82, 190, 0.6);
         }
 
         .login-link {
             margin-top: 20px;
             text-align: center;
-            color: #6b7280;
+            color: var(--text-muted);
             font-size: 0.95rem;
         }
 
         .login-link a {
-            color: var(--dark-blue);
+            color: var(--light-blue);
             text-decoration: none;
             font-weight: 600;
         }
@@ -151,17 +160,16 @@
             text-decoration: underline;
         }
 
-        /* Optional decorative progress bar (matches login theme colors) */
         .progress {
             height: 5px;
             margin-bottom: 20px;
-            background-color: #e5e7eb;
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
             overflow: hidden;
         }
 
         .progress-bar {
-            background-color: var(--dark-blue);
+            background-color: var(--light-blue);
             height: 100%;
             transition: width 0.3s ease;
         }
@@ -183,7 +191,6 @@
         <h4>Register</h4>
     </div>
 
-    <!-- Decorative progress bar -->
     <div class="progress">
         <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
@@ -199,7 +206,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Role:</label>
-            <select name="role" class="form-control" required>
+            <select name="role" class="form-select" required>
                 <option value="">-- Select Role --</option>
                 <option value="admin">Admin</option>
                 <option value="dentist">Dentist</option>
@@ -212,18 +219,16 @@
     </form>
 
     <p class="login-link">
-        <i class="fas fa-sign-in-alt me-1" style="color: var(--dark-blue);"></i>
+        <i class="fas fa-sign-in-alt me-1"></i>
         Already have an account?
         <a href="${pageContext.request.contextPath}/pages/userProfile/login.jsp">Login Here</a>
     </p>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Progress bar animation script -->
 <script>
-    const formInputs = document.querySelectorAll('.form-control');
+    const formInputs = document.querySelectorAll('.form-control, .form-select');
     const progressBar = document.querySelector('.progress-bar');
 
     formInputs.forEach(input => {

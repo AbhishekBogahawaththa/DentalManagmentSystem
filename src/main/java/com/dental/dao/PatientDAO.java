@@ -158,10 +158,10 @@ public class PatientDAO {
             stmt.setInt(11, patient.getId());
 
             int rowsAffected = stmt.executeUpdate();
-            System.out.println("✅ UPDATE affected " + rowsAffected + " row(s) for ID: " + patient.getId());
+            System.out.println(" UPDATE affected " + rowsAffected + " row(s) for ID: " + patient.getId());
 
             if (rowsAffected == 0) {
-                System.err.println("❌ WARNING: No patient found with ID " + patient.getId() + ". Check if record exists.");
+                System.err.println(" WARNING: No patient found with ID " + patient.getId() + ". Check if record exists.");
             }
 
         } catch (Exception e) {
