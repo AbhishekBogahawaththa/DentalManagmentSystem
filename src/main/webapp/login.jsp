@@ -44,7 +44,5 @@
 		<p class="text-center text-light"> 2025 &copy; Abhishek Bogahawaththa</p>
 	</footer>
 
-	///
-
 </body>
 </html>
