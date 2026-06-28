@@ -21,7 +21,6 @@
 		</ul>
 	</header>
 
-
 	<main style="margin-top: 8%;">
   		<h1 class="text-center">Admin Login</h1>
   		
@@ -45,7 +44,7 @@
 		<p class="text-center text-light"> 2025 &copy; Abhishek Bogahawaththa</p>
 	</footer>
 
-	
+	///
 
 </body>
 </html>
